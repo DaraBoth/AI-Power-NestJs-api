@@ -1,10 +1,14 @@
 import { Injectable, OnModuleInit } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
+import { AIService } from "src/ai/ai.service";
 import { Telegraf } from "telegraf";
 
 @Injectable()
 export class TelegramService implements OnModuleInit {
-  constructor(private readonly configService: ConfigService) {}
+  constructor(
+    private readonly configService: ConfigService,
+    private AIService: AIService
+  ) {}
 
   private bot: Telegraf;
 
@@ -40,7 +44,8 @@ export class TelegramService implements OnModuleInit {
       const text = message.text;
 
       // Implement your message handling logic here
-      await this.sendMessage(chatId, `Hello, you sent: ${text}`);
+      const resMsg = await this.AIService.generateResponse(text);
+      await this.sendMessage(chatId, resMsg);
     } catch (error) {
       console.error("Error handling message:", error);
       // Handle error gracefully
