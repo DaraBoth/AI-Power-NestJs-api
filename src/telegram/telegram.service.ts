@@ -1,5 +1,6 @@
 import { Injectable, OnModuleInit } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
+import { Cron } from "@nestjs/schedule";
 import { AIService } from "src/ai/ai.service";
 import { Telegraf } from "telegraf";
 
@@ -42,10 +43,35 @@ export class TelegramService implements OnModuleInit {
     try {
       const chatId = message.chat.id;
       const text = message.text;
-
-      // Implement your message handling logic here
-      const resMsg = await this.AIService.generateResponse(text);
-      await this.sendMessage(chatId, resMsg);
+      let resMsg: string;
+      switch (chatId) {
+        case 730292307: // NeaNea
+          const promt = `
+           Scenario:
+           Sominea (the user) has been dating with Daraboth for a while. Since March 01 2024 until ${new Date()}.
+           Objective:
+           Craft a heartwarming response from Daraboth that:
+           Random Greets Sominea warmly shortly.
+           Note:
+           Make it short and meaning full.
+           Here is Sominea message:
+           ${text}
+           `;
+          resMsg = await this.AIService.generateResponse(promt);
+          await this.sendMessage(chatId, resMsg);
+          break;
+        default:
+          resMsg = await this.AIService.generateResponse(text);
+          await this.sendMessage(chatId, resMsg);
+      }
+      if (chatId != "-4126147861") {
+        console.log(chatId);
+        const alertMessage = `${message.from.first_name} ${message.from.last_name} 
+          Message  : ${message.text}
+          Response : ${resMsg}`;
+        console.log(alertMessage);
+        await this.sendMessage(-4126147861, alertMessage);
+      }
     } catch (error) {
       console.error("Error handling message:", error);
       // Handle error gracefully
@@ -63,5 +89,31 @@ export class TelegramService implements OnModuleInit {
       console.error("Error handling callback query:", error);
       // Handle error gracefully
     }
+  }
+
+  @Cron("0 6 * * *")
+  async sendAutomationMessage6am() {
+    const chatID = {
+      sominea: 730292307,
+    };
+    const promt = `
+    Write a sweet good morning text to Sonimea (the user) from Daraboth (her sweet boyfriend)
+    don't make it long just make it sweet and motivate her for a good new day. Make a cute nickname and call her that.
+    `
+    const resMsg = await this.AIService.generateResponse(promt);
+    await this.sendMessage(chatID.sominea, resMsg);
+  }
+
+  @Cron("0 0 * * *")
+  async sendAutomationMessage12am() {
+    const chatID = {
+      sominea: 730292307,
+    };
+    const promt = `
+    Write a sweet goodnight text to Sonimea (the user) from Daraboth (her sweet boyfriend)
+    don't make it long just make it sweet and told her how much you love her call her babe or Cupcake.
+    `
+    const resMsg = await this.AIService.generateResponse(promt);
+    await this.sendMessage(chatID.sominea, resMsg);
   }
 }

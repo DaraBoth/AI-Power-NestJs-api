@@ -1,8 +1,7 @@
-import { Body, Controller, Post, Res } from "@nestjs/common";
+import { Body, Controller, Post, Request, Res } from "@nestjs/common";
 import { TelegramService } from "./telegram.service";
 import { ApiBody, ApiTags } from "@nestjs/swagger";
 import { SendMessageDto } from "./dto/SendMessageDto";
-import { Update } from "telegraf/typings/core/types/typegram";
 
 @Controller("telegram")
 @ApiTags('telegram')
@@ -19,12 +18,11 @@ export class TelegramController {
     await this.telegramService.sendMessage(chatId, message);
     return { message: "Sent message to Telegram bot!" };
   }
-  
+  // 975092634
   @Post("/webhook")
-  async handleUpdate(@Body() update: Update, @Res() res) {
+  async handleUpdate(@Body() messageObject: any,@Res() res) {
     try {
-      // Process the Telegram update
-      await this.telegramService.handleUpdate(update);
+      await this.telegramService.handleUpdate(messageObject);
       res.status(200).send("OK"); // Send a successful response to Telegram
     } catch (error) {
       console.error("Error processing Telegram update:", error);

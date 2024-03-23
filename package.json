@@ -5,6 +5,7 @@
   "license": "MIT",
   "scripts": {
     "prebuild": "rimraf dist",
+    "ngrok": "ngrok http http://localhost:3000",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
@@ -29,6 +30,7 @@
     "@nestjs/swagger": "7.2.0",
     "class-transformer": "0.5.1",
     "class-validator": "0.14.1",
+    "ngrok": "^5.0.0-beta.2",
     "reflect-metadata": "^0.1.12",
     "rimraf": "5.0.5",
     "rxjs": "7.8.1",
