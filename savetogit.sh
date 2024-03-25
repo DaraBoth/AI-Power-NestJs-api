@@ -9,7 +9,7 @@ add_to_github() {
 
     # Check if there are any changes to commit
     if git diff-index --quiet HEAD --; then
-        echo "No changes to commit."
+        echo "Up to date hz boss."
         exit 0
     fi
 
