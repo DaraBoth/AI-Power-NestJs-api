@@ -54,7 +54,13 @@ export class TelegramService implements OnModuleInit {
       let resMsg: string;
       switch (chatId) {
         case this.chatID.sominea: // NeaNea
-          const promt = `
+          if(message.text + "".startsWith("/toboth")){
+            await this.sendMessage(
+              this.chatID.me,
+              message.text + "".replace("/toboth", " ").trim()
+            );
+          } else {
+            const promt = `
            Scenario:
            Sominea (the user) has been dating with Daraboth for a while. Since March 01 2024 until ${new Date()}.
            Objective:
@@ -67,11 +73,12 @@ export class TelegramService implements OnModuleInit {
            `;
           resMsg = await this.AIService.generateResponse(promt);
           await this.sendMessage(chatId, resMsg);
+          }
           break;
         case this.chatID.log:
           if (message.text + "".startsWith("/reply")) {
             await this.sendMessage(
-              chatId,
+              this.chatID.sominea,
               message.text + "".replace("/reply", " ").trim()
             );
           }

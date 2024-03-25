@@ -8,7 +8,12 @@ last_build_log="./last_build.log"
 
 # Function to record build timestamps
 record_build_timestamps() {
-    find ./src -type f -name '*.ts' -exec stat -c "%Y %n" {} + > "$last_build_log"
+    # Find and update timestamps only for existing files
+    find ./src -type f -name '*.ts' -exec stat -c "%Y %n" {} + | while read -r ts file; do
+        if [ -e "$file" ]; then
+            echo "$ts $file"
+        fi
+    done > "$last_build_log"
 }
 
 # Function to calculate checksum of a file
