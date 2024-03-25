@@ -1,5 +1,4 @@
 import { Module } from "@nestjs/common";
-import { BotsModule } from "./telegrambots/bots.module";
 import { AIModule } from "./ai/ai.module";
 import { ConfigModule } from "@nestjs/config";
 import { ScheduleModule } from "@nestjs/schedule";
@@ -14,7 +13,6 @@ import { AIService } from "./ai/ai.service";
       envFilePath: ".env",
     }),
     ScheduleModule.forRoot(),
-    BotsModule,
     AIModule,
     CronjobsModule,
   ],

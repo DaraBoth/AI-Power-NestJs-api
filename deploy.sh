@@ -34,19 +34,23 @@ any_files_updated() {
     while IFS= read -r line; do
         last_build_ts=$(echo "$line" | awk '{print $1}')
         file=$(echo "$line" | cut -d ' ' -f2-)
+
+        # Check if the file exists
+        if [ ! -f "$file" ]; then
+            updated_files+=("\e[1;31m$file (deleted)\e[0m")  # Red color for deleted files
+            continue
+        fi
+
         current_ts=$(stat -c "%Y" "$file")
         if [ "$last_build_ts" -ne "$current_ts" ]; then
-            updated_files+=("$file")
+            updated_files+=("\e[1;32m$file\e[0m")  # Green color for updated files
         fi
     done < "$last_build_log"
 
     if [ ${#updated_files[@]} -gt 0 ]; then
-        echo "Boss file nis updated:"
+        echo "Files have been updated or deleted:"
         for file in "${updated_files[@]}"; do
-            updated_date=$(stat -c "%y" "$file")
-            # Format the date to YYYY-MM-DD hh:mm:ss
-            formatted_date=$(date -d "$updated_date" "+%Y-%m-%d %H:%M:%S")
-            echo "$file [$formatted_date]"
+            echo -e "$file"
         done
         read -p "Deploy lov ort boss? (y/n): " choice
         case "$choice" in
@@ -87,6 +91,9 @@ if any_files_updated; then
             --data-urlencode 'message=Personal-ai is ready on production boss!'
             
             echo "Message sent."
+
+            ./savetogit.sh
+
         else
             echo "Deployment to Vercel production failed. Please check the logs manually."
         fi
