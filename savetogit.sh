@@ -19,13 +19,13 @@ add_to_github() {
 
     # Prompt user to confirm if they want to push changes
     echo "Push file nis tov GitHub men boss? (y/n)"
-    read -t 3 -n 1 choice  # Wait for 3 seconds for user input
+    read -t 5 -n 1 choice  # Wait for 5 seconds for user input
     if [ "$choice" == "y" ] || [ "$choice" == "Y" ]; then
         echo "Ok Boss jam tic jeng"
     else
-        echo "Auto-confirming after 3 seconds boss..."
-        sleep 3
-        choice="y"  # Auto-confirm after 3 seconds
+        echo "Auto-confirming after 5 seconds boss..."
+        sleep 5
+        choice="y"  # Auto-confirm after 5 seconds
     fi
 
     if [ "$choice" == "y" ] || [ "$choice" == "Y" ]; then
