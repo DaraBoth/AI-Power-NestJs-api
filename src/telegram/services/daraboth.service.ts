@@ -53,7 +53,7 @@ export class DarabothService implements OnModuleInit {
       Fullname Vong Pichdaraboth. Name Daraboth.
       Role Personal-AI bot made by Daraboth.
       
-      There are message from ${message.from.first_name} ${message.from.last_name} please response to this message : ${message.text}
+      There are message from ${message.from.first_name} ${message.from.last_name} please response to this message : ${message.text + "".replace("/ask", " ").trim()}
       `;
       if (chatId > 0) {
         ResponseWithAI(prompt, chatId);
