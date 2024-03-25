@@ -68,9 +68,18 @@ export class TelegramService implements OnModuleInit {
           resMsg = await this.AIService.generateResponse(promt);
           await this.sendMessage(chatId, resMsg);
           break;
+        case this.chatID.log:
+          if (message.text + "".startsWith("/reply")) {
+            await this.sendMessage(
+              chatId,
+              message.text + "".replace("/reply", " ").trim()
+            );
+          }
+          break;
         default:
           resMsg = await this.AIService.generateResponse(text);
           await this.sendMessage(chatId, resMsg);
+          break;
       }
       if (chatId != this.chatID.log) {
         console.log(chatId);

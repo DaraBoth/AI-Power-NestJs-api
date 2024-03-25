@@ -48,7 +48,6 @@ export class DarabothService implements OnModuleInit {
       const chatId = message.chat.id;
       console.log("Chat ID = ", chatId);
       console.log("Text = ", message.text);
-
       const prompt = `
       Personal info
       Fullname Vong Pichdaraboth. Name Daraboth.
@@ -56,10 +55,29 @@ export class DarabothService implements OnModuleInit {
       
       There are message from ${message.from.first_name} ${message.from.last_name} please response to this message : ${message.text}
       `;
-      const resMsg = await this.AIService.generateResponse(prompt);
-      console.log("Reply = ", resMsg);
+      if (chatId > 0) {
+        ResponseWithAI(prompt, chatId);
+      } else {
+        if (message.text + "".startsWith("/") && message.text + "".length > 3) {
+          switch (message.text.slice(1)) {
+            case "ask":
+              ResponseWithAI(prompt, chatId);
+              break;
+            default:
+              await this.sendMessage(
+                chatId,
+                "Sorry I don't know that command.🙄"
+              );
+              break;
+          }
+        }
+      }
 
-      await this.sendMessage(chatId, resMsg);
+      async function ResponseWithAI(prompt: string, chatId: any) {
+        const resMsg = await this.AIService.generateResponse(prompt);
+        console.log("Reply = ", resMsg);
+        await this.sendMessage(chatId, resMsg);
+      }
     } catch (error) {
       console.error("Error handling message:", error);
       // Handle error gracefully
