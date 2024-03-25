@@ -14,6 +14,7 @@ export class TelegramService implements OnModuleInit {
   private chatID = {
     sominea: 730292307,
     log: -4126147861,
+    me: 485397124,
   };
 
   private babeBirthday = new Date("2024-03-27T00:00:00"); // bd babe at 12am

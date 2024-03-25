@@ -1,12 +1,16 @@
 import { Body, Controller, Post, Res } from "@nestjs/common";
-import { TelegramService } from "./telegram.service";
+import { TelegramService } from "./services/telegram.service";
 import { ApiBody, ApiTags } from "@nestjs/swagger";
 import { SendMessageDto } from "./dto/SendMessageDto";
+import { DarabothService } from "./services/daraboth.service";
 
 @Controller("telegram")
 @ApiTags('telegram')
 export class TelegramController {
-  constructor(private readonly telegramService: TelegramService) {}
+  constructor(
+    private readonly telegramService: TelegramService,
+    private readonly darabothService: DarabothService
+  ) {}
 
   @Post("/send-message")
   @ApiBody({
@@ -23,6 +27,17 @@ export class TelegramController {
   async handleUpdate(@Body() messageObject: any,@Res() res) {
     try {
       await this.telegramService.handleUpdate(messageObject);
+      res.status(200).send("OK"); // Send a successful response to Telegram
+    } catch (error) {
+      console.error("Error processing Telegram update:", error);
+      res.status(500).send("Internal Server Error"); // Handle errors gracefully
+    }
+  }
+
+  @Post("/daraboth")
+  async handleUpdateDaraboth_bot(@Body() messageObject: any,@Res() res) {
+    try {
+      await this.darabothService.handleUpdate(messageObject);
       res.status(200).send("OK"); // Send a successful response to Telegram
     } catch (error) {
       console.error("Error processing Telegram update:", error);
