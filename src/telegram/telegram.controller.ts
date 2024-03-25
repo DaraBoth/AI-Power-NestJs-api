@@ -16,7 +16,7 @@ export class TelegramController {
   })
   async sendMessage(@Body() { chatId, message }: SendMessageDto) {
     await this.telegramService.sendMessage(chatId, message);
-    return { message: "Sent message to Telegram bot!" };
+    return { message: "Success!" };
   }
   
   @Post("/webhook")
