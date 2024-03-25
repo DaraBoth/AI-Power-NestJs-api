@@ -11,6 +11,13 @@ export class TelegramService implements OnModuleInit {
     private AIService: AIService
   ) {}
 
+  private chatID = {
+    sominea: 730292307,
+    log: -4126147861,
+  };
+
+  private babeBirthday = new Date("2024-03-27T00:00:00"); // bd babe at 12am
+
   private bot: Telegraf;
 
   async onModuleInit() {
@@ -91,29 +98,64 @@ export class TelegramService implements OnModuleInit {
     }
   }
 
-  @Cron("0 6 * * *")
-  async sendAutomationMessage6am() {
-    const chatID = {
-      sominea: 730292307,
-    };
-    const promt = `
-    Write a sweet good morning text to Sonimea (the user) from Daraboth (her sweet boyfriend)
-    don't make it long just make it sweet and motivate her for a good new day. Make a cute nickname and call her that.
-    `
-    const resMsg = await this.AIService.generateResponse(promt);
-    await this.sendMessage(chatID.sominea, resMsg);
-  }
+  @Cron("* * * * * *")
+  async everySecond() {
+    const now = new Date();
+    now.toLocaleString("en-US", { timeZone: "Asia/Phnom_Penh" });
 
-  @Cron("0 0 * * *")
-  async sendAutomationMessage12am() {
-    const chatID = {
-      sominea: 730292307,
-    };
-    const promt = `
-    Write a sweet goodnight text to Sonimea (the user) from Daraboth (her sweet boyfriend)
-    don't make it long just make it sweet and told her how much you love her call her babe or Cupcake.
-    `
-    const resMsg = await this.AIService.generateResponse(promt);
-    await this.sendMessage(chatID.sominea, resMsg);
+    // 6am in the morning
+    if (
+      now.getHours() === 6 &&
+      now.getMinutes() === 0 &&
+      now.getSeconds() === 0
+    ) {
+      console.log("Sending good morning text");
+      const promt = `
+      Write a sweet good morning text to Sonimea (the user) from Daraboth (her sweet boyfriend)
+      don't make it long just make it sweet and motivate her for a good new day. Make a cute nickname and call her that.
+      `;
+      const resMsg = await this.AIService.generateResponse(promt);
+      await this.sendMessage(this.chatID.sominea, resMsg);
+      await this.sendMessage(this.chatID.log, resMsg);
+    }
+    // 12am at mid night
+    if (
+      now.getHours() === 0 &&
+      now.getMinutes() === 0 &&
+      now.getSeconds() === 0
+    ) {
+      console.log("Sending good night text");
+      const promt = `
+      Write a sweet goodnight text to Sonimea (the user) from Daraboth (her sweet boyfriend)
+      don't make it long just make it sweet and told her how much you love her call her babe or Cupcake.
+      `;
+      const resMsg = await this.AIService.generateResponse(promt);
+      await this.sendMessage(this.chatID.sominea, resMsg);
+      await this.sendMessage(this.chatID.log, resMsg);
+    }
+    if (
+      // BD babe Day 27 , Month 03
+      now.getMonth() === this.babeBirthday.getMonth() &&
+      now.getDate() === this.babeBirthday.getDate() &&
+      now.getHours() === this.babeBirthday.getHours() &&
+      now.getMinutes() === this.babeBirthday.getMinutes()
+    ) {
+      const promt = `
+      Compose a heartfelt birthday wish for your girlfriend, assuming the role of her loving boyfriend. Craft a message that expresses your deep affection, admiration, and appreciation for her on this special day. Include personalized details and endearing terms of endearment to make the wish feel intimate and sincere. Ensure the message radiates warmth, tenderness, and genuine emotion..
+
+      My name Daraboth (her boyfriend)
+      Her name Sominea (the user)
+      Note : 
+      - Make it look formal and 
+      - Make sure it look nothing like email.
+      - Not too long to read short and meaningful
+      - Make it sound sweet 
+      - Add some wishes
+      - Max words 120
+      - add some emoji (doesn't count in words)`;
+      const resMsg = await this.AIService.generateResponse(promt);
+      await this.sendMessage(this.chatID.sominea, resMsg);
+      await this.sendMessage(this.chatID.log, resMsg);
+    }
   }
 }
