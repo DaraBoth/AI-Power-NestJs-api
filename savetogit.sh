@@ -18,28 +18,25 @@ add_to_github() {
     git status --short
 
     # Prompt user to confirm if they want to push changes
-    echo "Push file ler ng tov GitHub ort boss? (y/n)"
-    read -t 5 -n 1 choice  # Wait for 5 seconds for user input
-    if [ "$choice" == "y" ] || [ "$choice" == "Y" ]; then
-        echo "Ok Boss jam tic jeng"
-    else
-        echo "Auto-confirming after 5 seconds boss..."
-        sleep 5
-        choice="y"  # Auto-confirm after 5 seconds
-    fi
+    read -p "Push ort boss? (y/n): " choice
+    case "$choice" in
+        [Yy]* )
+            # Add all modified and new files
+            git add .
 
-    if [ "$choice" == "y" ] || [ "$choice" == "Y" ]; then
-        # Add all modified and new files
-        git add .
+            # Remove deleted files from the Git index
+            git ls-files --deleted -z | xargs -0 git rm
 
-        # Commit changes
-        git commit -m "$commit_message"
+            # Commit changes
+            git commit -m "$commit_message"
 
-        # Push changes to GitHub
-        git push origin master  # Replace 'master' with your branch name if necessary
-    else
-        echo "Changes not pushed to GitHub."
-    fi
+            # Push changes to GitHub
+            git push origin master  # Replace 'master' with your branch name if necessary
+            ;;
+        * )
+            echo "Ok boss."
+            ;;
+    esac
 }
 
 # Call the function with the commit message
