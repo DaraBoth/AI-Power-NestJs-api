@@ -14,11 +14,11 @@ add_to_github() {
     fi
 
     # List updated files
-    echo "Updated files:"
+    echo "Files updated tmey boss:"
     git status --short
 
     # Prompt user to confirm if they want to push changes
-    echo "Push file nis tov GitHub men boss? (y/n)"
+    echo "Push file ler ng tov GitHub ort boss? (y/n)"
     read -t 5 -n 1 choice  # Wait for 5 seconds for user input
     if [ "$choice" == "y" ] || [ "$choice" == "Y" ]; then
         echo "Ok Boss jam tic jeng"
