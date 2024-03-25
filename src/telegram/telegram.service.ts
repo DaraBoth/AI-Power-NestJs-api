@@ -52,7 +52,7 @@ export class TelegramService implements OnModuleInit {
       const text = message.text;
       let resMsg: string;
       switch (chatId) {
-        case 730292307: // NeaNea
+        case this.chatID.sominea: // NeaNea
           const promt = `
            Scenario:
            Sominea (the user) has been dating with Daraboth for a while. Since March 01 2024 until ${new Date()}.
@@ -71,13 +71,13 @@ export class TelegramService implements OnModuleInit {
           resMsg = await this.AIService.generateResponse(text);
           await this.sendMessage(chatId, resMsg);
       }
-      if (chatId != "-4126147861") {
+      if (chatId != this.chatID.log) {
         console.log(chatId);
         const alertMessage = `${message.from.first_name} ${message.from.last_name} 
           Message  : ${message.text}
           Response : ${resMsg}`;
         console.log(alertMessage);
-        await this.sendMessage(-4126147861, alertMessage);
+        await this.sendMessage(this.chatID.log, alertMessage);
       }
     } catch (error) {
       console.error("Error handling message:", error);
