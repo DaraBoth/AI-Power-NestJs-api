@@ -55,19 +55,16 @@ export class DarabothService implements OnModuleInit {
       } else {
         // is group chat
         if ((message.text + "").startsWith("/")) {
-          switch (message.text) {
-            case "/ask":
-              await this.ResponseWithAI(chatId, {
-                ...message,
-                text: message.text + "".replaceAll("/ask", " ").trim(),
-              });
-              break;
-            default:
-              await this.sendMessage(
-                chatId,
-                "Sorry I don't know that command.🙄"
-              );
-              break;
+          if ((message.text + "").includes("/ask")) {
+            await this.ResponseWithAI(chatId, {
+              ...message,
+              text: (message.text + "").replaceAll("/ask", " ").trim(),
+            });
+          } else {
+            await this.sendMessage(
+              chatId,
+              "Sorry I don't know that command.🙄"
+            );
           }
         }
       }
@@ -83,7 +80,6 @@ export class DarabothService implements OnModuleInit {
     Fullname Vong Pichdaraboth. Name Daraboth.
     Role Personal-AI bot made by Daraboth.
     
-    Please response normal 
     There are message from ${message.from.first_name} ${message.from.last_name} please response to this message : ${message.text}
     `;
     const resMsg = await this.AIService.generateResponse(prompt);
