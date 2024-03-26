@@ -45,19 +45,21 @@ export class DarabothService implements OnModuleInit {
 
   private async handleMessage(message: any) {
     try {
-      const chatId = message.chat.id;
+      const chatId: number = message.chat.id;
       console.log("Chat ID = ", chatId);
       console.log("Text = ", message.text);
 
+      // is personal chat
       if (chatId > 0) {
-        ResponseWithAI(this, chatId, message);
+        await this.ResponseWithAI(chatId, message);
       } else {
-        if (message.text + "".startsWith("/")) {
-          switch (message.text.slice(1)) {
-            case "ask":
-              ResponseWithAI(this, chatId, {
+        // is group chat
+        if ((message.text + "").startsWith("/")) {
+          switch (message.text) {
+            case "/ask":
+              await this.ResponseWithAI(chatId, {
                 ...message,
-                text: message.text + "".replaceAll("/ask"," ").trim(),
+                text: message.text + "".replaceAll("/ask", " ").trim(),
               });
               break;
             default:
@@ -69,27 +71,24 @@ export class DarabothService implements OnModuleInit {
           }
         }
       }
-
-      async function ResponseWithAI(
-        parentThis: any,
-        chatId: any,
-        message: any
-      ) {
-        const prompt = `
-        Personal info
-        Fullname Vong Pichdaraboth. Name Daraboth.
-        Role Personal-AI bot made by Daraboth.
-        
-        There are message from ${message.from.first_name} ${message.from.last_name} please response to this message : ${message.text}
-        `;
-        const resMsg = await parentThis.AIService.generateResponse(prompt);
-        console.log("Reply = ", resMsg);
-        await this.sendMessage(chatId, resMsg);
-      }
     } catch (error) {
       console.error("Error handling message:", error);
       // Handle error gracefully
     }
+  }
+
+  private async ResponseWithAI(chatId: any, message: any) {
+    const prompt = `
+    Personal info
+    Fullname Vong Pichdaraboth. Name Daraboth.
+    Role Personal-AI bot made by Daraboth.
+    
+    Please response normal 
+    There are message from ${message.from.first_name} ${message.from.last_name} please response to this message : ${message.text}
+    `;
+    const resMsg = await this.AIService.generateResponse(prompt);
+    console.log("Reply = ", resMsg);
+    await this.sendMessage(chatId, resMsg);
   }
 
   private async handleCallbackQuery(callbackQuery: any) {

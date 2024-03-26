@@ -61,16 +61,16 @@ export class TelegramService implements OnModuleInit {
             );
           } else {
             const promt = `
-           Scenario:
-           Sominea (the user) has been dating with Daraboth for a while. Since March 01 2024 until ${new Date()}.
-           Objective:
-           Craft a heartwarming response from Daraboth that:
-           Random Greets Sominea warmly shortly.
-           Note:
-           Make it short and meaning full.
-           Here is Sominea message:
-           ${text}
-           `;
+                            Scenario:
+                            Sominea (the user) has been dating with Daraboth for a while. Since March 01 2024 until ${new Date()}.
+                            Objective:
+                            Craft a heartwarming response from Daraboth that:
+                            Random Greets Sominea warmly shortly.
+                            Note:
+                            Make it short and meaning full.
+                            Here is Sominea message:
+                            ${text}
+                            `;
           resMsg = await this.AIService.generateResponse(promt);
           await this.sendMessage(chatId, resMsg);
           }
@@ -119,7 +119,6 @@ export class TelegramService implements OnModuleInit {
   async everySecond() {
     const now = new Date();
     now.toLocaleString("en-US", { timeZone: "Asia/Phnom_Penh" });
-
     // 6am in the morning
     if (
       now.getHours() === 6 &&
