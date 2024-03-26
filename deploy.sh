@@ -52,6 +52,17 @@ any_files_updated() {
         fi
     done < "$last_build_log"
 
+    # Check if there are any deleted files
+    local deleted_files=()
+    while IFS= read -r line; do
+        file=$(echo "$line" | cut -d ' ' -f2-)
+
+        # Check if the file exists
+        if [ ! -f "$file" ]; then
+            deleted_files+=("$file")
+        fi
+    done < "$last_build_log"
+
     if [ ${#updated_files[@]} -gt 0 ]; then
         echo "Files have been updated or deleted:"
         for file in "${updated_files[@]}"; do
@@ -65,6 +76,14 @@ any_files_updated() {
     else
         echo "No files have been updated. No need to deploy boss."
         return 1
+    fi
+
+    # If there are deleted files, append them back to the last_build.log file
+    if [ ${#deleted_files[@]} -gt 0 ]; then
+        echo "Deleted files found. Updating last_build.log..."
+        for file in "${deleted_files[@]}"; do
+            echo "$(date +%s) $file" >> "$last_build_log"
+        done
     fi
 }
 

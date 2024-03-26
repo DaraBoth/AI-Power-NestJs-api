@@ -48,20 +48,17 @@ export class DarabothService implements OnModuleInit {
       const chatId = message.chat.id;
       console.log("Chat ID = ", chatId);
       console.log("Text = ", message.text);
-      const prompt = `
-      Personal info
-      Fullname Vong Pichdaraboth. Name Daraboth.
-      Role Personal-AI bot made by Daraboth.
-      
-      There are message from ${message.from.first_name} ${message.from.last_name} please response to this message : ${message.text + "".replace("/ask", " ").trim()}
-      `;
+
       if (chatId > 0) {
-        ResponseWithAI(prompt, chatId);
+        ResponseWithAI(this, chatId, message);
       } else {
-        if (message.text + "".startsWith("/") && message.text + "".length > 3) {
+        if (message.text + "".startsWith("/")) {
           switch (message.text.slice(1)) {
             case "ask":
-              ResponseWithAI(prompt, chatId);
+              ResponseWithAI(this, chatId, {
+                ...message,
+                text: message.text + "".replaceAll("/ask"," ").trim(),
+              });
               break;
             default:
               await this.sendMessage(
@@ -73,8 +70,19 @@ export class DarabothService implements OnModuleInit {
         }
       }
 
-      async function ResponseWithAI(prompt: string, chatId: any) {
-        const resMsg = await this.AIService.generateResponse(prompt);
+      async function ResponseWithAI(
+        parentThis: any,
+        chatId: any,
+        message: any
+      ) {
+        const prompt = `
+        Personal info
+        Fullname Vong Pichdaraboth. Name Daraboth.
+        Role Personal-AI bot made by Daraboth.
+        
+        There are message from ${message.from.first_name} ${message.from.last_name} please response to this message : ${message.text}
+        `;
+        const resMsg = await parentThis.AIService.generateResponse(prompt);
         console.log("Reply = ", resMsg);
         await this.sendMessage(chatId, resMsg);
       }
