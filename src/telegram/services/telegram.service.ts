@@ -56,7 +56,7 @@ export class TelegramService implements OnModuleInit {
             if (!text.startsWith("/toboth"))
               resMsg = "Sorry I don't know that command.";
             else resMsg = text.replace("/toboth", " ").trim();
-            await this.sendMessage(this.chatID.me, resMsg);
+            await this.sendMessage(this.chatID.log, resMsg);
           } else {
             const promt = `
                             Scenario:
