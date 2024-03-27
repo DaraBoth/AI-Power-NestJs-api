@@ -16,7 +16,7 @@ record_build_timestamps() {
     mv "$last_build_log.tmp" "$last_build_log"
 }
 
-# Function to check if any files have been updated or deleted since last build
+# Function to check if any files have been updated since last build
 any_files_updated() {
     local last_build_ts
     local current_ts
@@ -26,7 +26,7 @@ any_files_updated() {
     if [ ! -f "$last_build_log" ]; then
         echo "Last build log file not found. Creating..."
         record_build_timestamps
-        return 0  # Files updated as this is the first build
+        return 1  # No files updated as this is the first build
     fi
 
     # Read last build timestamps from the log file
@@ -42,63 +42,40 @@ any_files_updated() {
 
         current_ts=$(stat -c "%Y" "$file" 2>/dev/null || echo "0")
         if [ "$last_build_ts" -ne "$current_ts" ]; then
-            updated_files+=("\e[1;34m$file\e[0m")  # Blue color for updated files
+            updated_files+=("\e[1;32m$file\e[0m")  # Green color for updated files
         fi
     done < "$last_build_log"
 
     if [ ${#updated_files[@]} -gt 0 ]; then
-        echo "Files have been updated or deleted:"
+        echo "Files changes:"
         for file in "${updated_files[@]}"; do
             echo -e "$file"
         done
-        read -p "Deploy lov ort boss? (y/n): " choice
-        case "$choice" in
-            [Yy]* ) return 0 ;;
-            * ) echo "OK Boss"; exit ;;
-        esac
+        return 0
     else
-        echo "No files have been updated. No need to deploy boss."
         return 1
     fi
 }
 
+# Function to update last_build.log file with new timestamps
+update_last_build_log() {
+    record_build_timestamps
+}
+
 # Check if any files have been updated since last build
 if any_files_updated; then
-    echo "Proceeding with deployment..."
-
-    # Run npm build
-    echo "Building project..."
-    npm run build
-
-    # Check if npm build was successful
-    if [ $? -eq 0 ]; then
-        echo "Build successful."
-
-        # Deploy to Vercel production
-        echo "Deploying to Vercel production..."
-        vercel --prod
-
-        # Check if Vercel deployment was successful
-        if [ $? -eq 0 ]; then
-            echo "Deployment to Vercel production successful."
-
-            # Send message using curl
-            echo "Sending message..."
-            curl --location 'https://daraboth-personalai.vercel.app/telegram/send-message' \
-            --header 'Content-Type: application/x-www-form-urlencoded' \
-            --data-urlencode 'chatId=485397124' \
-            --data-urlencode 'message=Personal-ai is ready on production boss!'
-            
-            echo "Message sent."
-
+    echo "Deploy lov ort boss? (y/n):"
+    read -r choice
+    case "$choice" in
+        [Yy]* )
+            ./deploytovercel.sh
+            update_last_build_log
             ./savetogit.sh
-
-        else
-            echo "Deployment to Vercel production failed. Please check the logs manually."
-        fi
-    else
-        echo "Build failed. Please check the logs manually."
-    fi
+            ;;
+        * )
+            echo "OK Boss. No deployment will be done."
+            ;;
+    esac
 else
-    echo "No files have been updated. No need to deploy boss."
+    echo "No updated files. No need to deploy boss."
 fi
