@@ -17,8 +17,6 @@ export class TelegramService implements OnModuleInit {
     me: 485397124,
   };
 
-  private babeBirthday = new Date("2024-03-27T00:00:00"); // bd babe at 12am
-
   private bot: Telegraf;
 
   async onModuleInit() {
@@ -50,15 +48,15 @@ export class TelegramService implements OnModuleInit {
   private async handleMessage(message: any) {
     try {
       const chatId = message.chat.id;
-      const text = message.text;
+      const text: string = (message.text + "").trim();
       let resMsg: string;
       switch (chatId) {
         case this.chatID.sominea: // NeaNea
-          if (message.text + "".startsWith("/toboth")) {
-            await this.sendMessage(
-              this.chatID.me,
-              message.text + "".replace("/toboth", " ").trim()
-            );
+          if (text.startsWith("/")) {
+            if (!text.startsWith("/toboth"))
+              resMsg = "Sorry I don't know that command.";
+            else resMsg = text.replace("/toboth", " ").trim();
+            await this.sendMessage(this.chatID.me, resMsg);
           } else {
             const promt = `
                             Scenario:
@@ -76,10 +74,10 @@ export class TelegramService implements OnModuleInit {
           }
           break;
         case this.chatID.log:
-          if (message.text + "".startsWith("/reply")) {
+          if (text.startsWith("/reply")) {
             await this.sendMessage(
               this.chatID.sominea,
-              message.text + "".replace("/reply", " ").trim()
+              text.replace("/reply", "").trim()
             );
           }
           break;
@@ -91,7 +89,7 @@ export class TelegramService implements OnModuleInit {
       if (chatId != this.chatID.log) {
         console.log(chatId);
         const alertMessage = `${message.from.first_name} ${message.from.last_name} 
-          Message  : ${message.text}
+          Message  : ${text}
           Response : ${resMsg}`;
         console.log(alertMessage);
         await this.sendMessage(this.chatID.log, alertMessage);
@@ -124,11 +122,10 @@ export class TelegramService implements OnModuleInit {
     return decoded;
   }
 
-  formatDate(date) {
+  formatDate(date: Date) {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, "0");
     const day = String(date.getDate()).padStart(2, "0");
-
     return `${year}${month}${day}`;
   }
 
@@ -172,5 +169,4 @@ export class TelegramService implements OnModuleInit {
     await this.sendMessage(this.chatID.sominea, resMsg);
     await this.sendMessage(this.chatID.log, resMsg);
   }
-
 }
