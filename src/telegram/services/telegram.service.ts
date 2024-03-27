@@ -56,7 +56,7 @@ export class TelegramService implements OnModuleInit {
             if (!text.startsWith("/toboth"))
               resMsg = "Sorry I don't know that command. /toboth - direct to him";
             else resMsg = text.replace("/toboth", " ").trim();
-            await this.sendMessage(this.chatID.sominea, resMsg);
+            await this.sendMessage(this.chatID.me, resMsg);
           } else {
             const promt = `
             Scenario:
@@ -86,7 +86,7 @@ export class TelegramService implements OnModuleInit {
           await this.sendMessage(chatId, resMsg);
           break;
       }
-      if (chatId != this.chatID.log) {
+      if (chatId != this.chatID.log && !text.startsWith("/toboth")) {
         console.log(chatId);
         let alertMessage = `${message.from.first_name} ${message?.from?.last_name ?? ""} \n`; 
         alertMessage += `Message  : ${text} \n`
