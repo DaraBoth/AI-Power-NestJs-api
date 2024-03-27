@@ -69,7 +69,7 @@ if any_files_updated; then
     case "$choice" in
         [Yy]* )
             ./deploytovercel.sh
-            update_last_build_log
+            update_last_build_log # after finish build jam run ah nis if build fail kom run 
             ./savetogit.sh
             ;;
         * )

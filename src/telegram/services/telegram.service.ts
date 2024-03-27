@@ -88,9 +88,9 @@ export class TelegramService implements OnModuleInit {
       }
       if (chatId != this.chatID.log) {
         console.log(chatId);
-        const alertMessage = `${message.from.first_name} ${message.from.last_name} 
-          Message  : ${text}
-          Response : ${resMsg}`;
+        let alertMessage = `**${message.from.first_name} ${message?.from?.last_name}** \n`; 
+        alertMessage += `**Message**  : ${text} \n`
+        alertMessage += `**Response** : ${resMsg}`
         console.log(alertMessage);
         await this.sendMessage(this.chatID.log, alertMessage);
       }
