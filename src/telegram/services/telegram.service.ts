@@ -54,9 +54,9 @@ export class TelegramService implements OnModuleInit {
         case this.chatID.sominea: // NeaNea
           if (text.startsWith("/")) {
             if (!text.startsWith("/toboth"))
-              resMsg = "Sorry I don't know that command.";
+              resMsg = "Sorry I don't know that command. /toboth - direct to him";
             else resMsg = text.replace("/toboth", " ").trim();
-            await this.sendMessage(this.chatID.log, resMsg);
+            await this.sendMessage(this.chatID.sominea, resMsg);
           } else {
             const promt = `
             Scenario:

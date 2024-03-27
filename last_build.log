@@ -13,6 +13,6 @@
 1711336630 ./src/cronjobs/cronjobs.service.ts
 1711014340 ./src/main.ts
 1711094964 ./src/telegram/dto/SendMessageDto.ts
-1711419905 ./src/telegram/services/daraboth.service.ts
-1711521682 ./src/telegram/services/telegram.service.ts
+1711522199 ./src/telegram/services/daraboth.service.ts
+1711522025 ./src/telegram/services/telegram.service.ts
 1711443860 ./src/telegram/telegram.controller.ts

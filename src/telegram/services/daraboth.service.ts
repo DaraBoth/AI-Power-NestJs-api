@@ -61,10 +61,10 @@ export class DarabothService implements OnModuleInit {
               text: (message.text + "").replaceAll("/ask", " ").trim(),
             });
           } else {
-            await this.sendMessage(
-              chatId,
-              "Sorry I don't know that command.🙄"
-            );
+            // await this.sendMessage(
+            //   chatId,
+            //   "Sorry I don't know that command.🙄"
+            // );
           }
         }
       }
