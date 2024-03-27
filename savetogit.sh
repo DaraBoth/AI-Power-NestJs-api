@@ -24,9 +24,6 @@ add_to_github() {
             # Add all modified and new files
             git add .
 
-            # Remove deleted files from the Git index
-            git ls-files --deleted -z | xargs -0 git rm
-
             # Commit changes
             git commit -m "$commit_message"
 

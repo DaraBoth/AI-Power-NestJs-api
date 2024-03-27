@@ -5,7 +5,7 @@ last_build_log="./last_build.log"
 
 # Function to record build timestamps
 record_build_timestamps() {
-    # Remove entries for deleted files and update timestamps for existing files
+    # Find and update timestamps only for existing files
     find ./src -type f -name '*.ts' -exec stat -c "%Y %n" {} + | while read -r ts file; do
         if [ -e "$file" ]; then
             echo "$ts $file"
@@ -16,12 +16,7 @@ record_build_timestamps() {
     mv "$last_build_log.tmp" "$last_build_log"
 }
 
-# Function to calculate checksum of a file
-calculate_checksum() {
-    md5sum "$1" | awk '{ print $1 }'
-}
-
-# Function to check if any files have been updated since last build
+# Function to check if any files have been updated or deleted since last build
 any_files_updated() {
     local last_build_ts
     local current_ts
@@ -35,20 +30,19 @@ any_files_updated() {
     fi
 
     # Read last build timestamps from the log file
-    while read -r line; do
+    updated_files=()
+    while IFS= read -r line; do
         last_build_ts=$(echo "$line" | awk '{print $1}')
         file=$(echo "$line" | cut -d ' ' -f2-)
 
-        # Check if the file exists in the src directory
-        if [ -e "$file" ]; then
-            current_ts=$(stat -c "%Y" "$file" 2>/dev/null || echo "0")
-            if [ "$last_build_ts" -ne "$current_ts" ]; then
-                # File exists and has been updated
-                updated_files+=("\e[1;34m$file\e[0m")  # Blue color for updated files
-            fi
-        else
-            # File doesn't exist in src directory
+        if [ ! -e "$file" ]; then
             updated_files+=("\e[1;31m$file (deleted)\e[0m")  # Red color for deleted files
+            continue
+        fi
+
+        current_ts=$(stat -c "%Y" "$file" 2>/dev/null || echo "0")
+        if [ "$last_build_ts" -ne "$current_ts" ]; then
+            updated_files+=("\e[1;34m$file\e[0m")  # Blue color for updated files
         fi
     done < "$last_build_log"
 
