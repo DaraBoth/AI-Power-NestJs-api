@@ -14,6 +14,7 @@ add_to_github() {
     fi
 
     # List updated files
+    echo ""
     echo "Files updated tmey boss:"
     git status --short
 

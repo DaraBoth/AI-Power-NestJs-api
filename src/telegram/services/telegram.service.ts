@@ -55,8 +55,11 @@ export class TelegramService implements OnModuleInit {
           if (text.startsWith("/")) {
             if (!text.startsWith("/toboth"))
               resMsg = "Sorry I don't know that command. /toboth - direct to him";
-            else resMsg = text.replace("/toboth", " ").trim();
-            await this.sendMessage(this.chatID.me, resMsg);
+            else resMsg = text.replaceAll("/toboth", "").trim();
+            await this.sendMessage(this.chatID.log,
+            `Hey boss message from ${message.from.first_name} ${message?.from?.last_name ?? ""} \n
+             Message: "${resMsg}"
+            `);
           } else {
             const promt = `
             Scenario:
@@ -74,10 +77,10 @@ export class TelegramService implements OnModuleInit {
           }
           break;
         case this.chatID.log:
-          if (text.startsWith("/reply")) {
+          if (text.includes("/reply")) {
             await this.sendMessage(
               this.chatID.sominea,
-              text.replace("/reply", "").trim()
+              text.replaceAll("/reply", "").trim()
             );
           }
           break;
