@@ -52,7 +52,6 @@ export class TelegramController {
     @Query("secret") secret: string,
     @Query("isMorning") isMorning: boolean,
     @Query("isMidnight") isMidnight: boolean,
-    @Query("isSpecifeDay") isSpecifeDay: boolean,
     @Res() res
   ) {
     try {
@@ -70,7 +69,6 @@ export class TelegramController {
 
       if (isMorning) await this.telegramService.morning();
       if (isMidnight) await this.telegramService.midnight();
-      if (isSpecifeDay) await this.telegramService.bdSend();
       res.status(200).send("OK"); //   Send a successful response to Telegram
       
     } catch (error) {
