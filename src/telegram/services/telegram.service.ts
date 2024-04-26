@@ -52,29 +52,29 @@ export class TelegramService implements OnModuleInit {
       let resMsg: string;
       switch (chatId) {
         case this.chatID.sominea: // NeaNea
-          if (text.startsWith("/")) {
-            if (!text.startsWith("/toboth"))
-              resMsg = "Sorry I don't know that command. /toboth - direct to him";
-            else resMsg = text.replaceAll("/toboth", "").trim();
-            await this.sendMessage(this.chatID.log,
-            `Hey boss message from ${message.from.first_name} ${message?.from?.last_name ?? ""} \n
-             Message: "${resMsg}"
-            `);
-          } else {
-            const promt = `
-            Scenario:
-            Sominea (the user) has been dating with Daraboth for a while. Since March 01 2024 until ${new Date()}.
-            Objective:
-            Craft a heartwarming response from Daraboth that:
-            Random Greets Sominea warmly shortly.
-            Note:
-            Make it short and meaning full.
-            Here is Sominea message:
-            ${text}
-            `;
-            resMsg = await this.AIService.generateResponse(promt);
-            await this.sendMessage(chatId, resMsg);
-          }
+          // if (text.startsWith("/")) {
+          //   if (!text.startsWith("/toboth"))
+          //     resMsg = "Sorry I don't know that command. /toboth - direct to him";
+          //   else resMsg = text.replaceAll("/toboth", "").trim();
+          //   await this.sendMessage(this.chatID.log,
+          //   `Hey boss message from ${message.from.first_name} ${message?.from?.last_name ?? ""} \n
+          //    Message: "${resMsg}"
+          //   `);
+          // } else {
+          //   const promt = `
+          //   Scenario:
+          //   Sominea (the user) has been dating with Daraboth for a while. Since March 01 2024 until ${new Date()}.
+          //   Objective:
+          //   Craft a heartwarming response from Daraboth that:
+          //   Random Greets Sominea warmly shortly.
+          //   Note:
+          //   Make it short and meaning full.
+          //   Here is Sominea message:
+          //   ${text}
+          //   `;
+          //   resMsg = await this.AIService.generateResponse(promt);
+          //   await this.sendMessage(chatId, resMsg);
+          // }
           break;
         case this.chatID.log:
           if (text.includes("/reply")) {

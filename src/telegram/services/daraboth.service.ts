@@ -24,10 +24,12 @@ export class DarabothService implements OnModuleInit {
 
   async sendMessage(chatId: number, message: string) {
     try {
-      await this.botDaraboth.telegram.sendMessage(chatId, message);
+      const response = await this.botDaraboth.telegram.sendMessage(chatId, message);
+      return response;
     } catch (error) {
       console.error("Error sending Telegram message:", error);
       // Handle error gracefully, e.g., notify user or retry
+      return error;
     }
   }
 
