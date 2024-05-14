@@ -35,7 +35,6 @@ export class TelegramService implements OnModuleInit {
 
   async handleUpdate(update: any) {
     const { message = undefined, callbackQuery = undefined } = update;
-
     if (message) {
       await this.handleMessage(message);
     } else if (callbackQuery) {
@@ -51,16 +50,6 @@ export class TelegramService implements OnModuleInit {
       const text: string = (message.text + "").trim();
       let resMsg: string;
       switch (chatId) {
-        case this.chatID.sominea: 
-          break;
-        case this.chatID.log:
-          if (text.includes("/reply")) {
-            await this.sendMessage(
-              this.chatID.sominea,
-              text.replaceAll("/reply", "").trim()
-            );
-          }
-          break;
         default:
           resMsg = await this.AIService.generateResponse(text);
           await this.sendMessage(chatId, resMsg);

@@ -14,5 +14,5 @@
 1715652343 ./src/main.ts
 1715652343 ./src/telegram/dto/SendMessageDto.ts
 1715652343 ./src/telegram/services/daraboth.service.ts
-1715661324 ./src/telegram/services/telegram.service.ts
+1715661763 ./src/telegram/services/telegram.service.ts
 1715652343 ./src/telegram/telegram.controller.ts
