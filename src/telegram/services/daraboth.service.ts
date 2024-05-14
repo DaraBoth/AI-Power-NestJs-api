@@ -12,13 +12,12 @@ export class DarabothService implements OnModuleInit {
   ) {}
 
   private chatID = {
-    sominea: 730292307,
     log: -4126147861,
   };
   private botDaraboth: Telegraf;
 
   async onModuleInit() {
-    const token = this.configService.get("TELEGRAM_BOT_TOKEN2");
+    const token = this.configService.get("TELEGRAM_BOT_TOKEN");
     this.botDaraboth = new Telegraf(token);
   }
 

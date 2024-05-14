@@ -2,7 +2,7 @@
 1715652343 ./src/ai/ai.module.ts
 1715652343 ./src/ai/ai.service.ts
 1715652343 ./src/ai/entities/ai.entity.ts
-1715652343 ./src/app.module.ts
+1715663296 ./src/app.module.ts
 1715652343 ./src/cats/cats.controller.ts
 1715652343 ./src/cats/cats.module.ts
 1715652343 ./src/cats/cats.service.ts
@@ -13,6 +13,5 @@
 1715652343 ./src/cronjobs/cronjobs.service.ts
 1715652343 ./src/main.ts
 1715652343 ./src/telegram/dto/SendMessageDto.ts
-1715652343 ./src/telegram/services/daraboth.service.ts
-1715661763 ./src/telegram/services/telegram.service.ts
-1715652343 ./src/telegram/telegram.controller.ts
+1715663109 ./src/telegram/services/daraboth.service.ts
+1715663262 ./src/telegram/telegram.controller.ts
