@@ -3,11 +3,6 @@
 1715652343 ./src/ai/ai.service.ts
 1715652343 ./src/ai/entities/ai.entity.ts
 1715663296 ./src/app.module.ts
-1715652343 ./src/cats/cats.controller.ts
-1715652343 ./src/cats/cats.module.ts
-1715652343 ./src/cats/cats.service.ts
-1715652343 ./src/cats/dto/create-cat.dto.ts
-1715652343 ./src/cats/entities/cat.entity.ts
 1715652343 ./src/cronjobs/cronjobs.module.ts
 1715652343 ./src/cronjobs/cronjobs.service.spec.ts
 1715652343 ./src/cronjobs/cronjobs.service.ts
