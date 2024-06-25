@@ -68,7 +68,7 @@ if any_files_updated; then
     read -r choice
     case "$choice" in
         [Yy]* )
-            ./tovercel.sh
+            # ./tovercel.sh
             update_last_build_log # after finish build jam run ah nis if build fail kom run 
             ./savetogit.sh
             ;;
