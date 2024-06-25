@@ -5,6 +5,7 @@ import { AppModule } from "./app.module";
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     logger: ["error", "warn"],
+    cors: true
   });
 
   const options = new DocumentBuilder()
@@ -23,7 +24,7 @@ async function bootstrap() {
       "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.15.5/swagger-ui-standalone-preset.js",
     ],
   });
-
+  app.enableCors();
   await app.listen(3000);
   console.log(`Application is running on: ${await app.getUrl()}`);
 }
