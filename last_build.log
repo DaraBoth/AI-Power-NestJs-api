@@ -1,6 +1,6 @@
-1715652343 ./src/ai/ai.controller.ts
+1719817662 ./src/ai/ai.controller.ts
 1715652343 ./src/ai/ai.module.ts
-1715652343 ./src/ai/ai.service.ts
+1719817692 ./src/ai/ai.service.ts
 1715652343 ./src/ai/entities/ai.entity.ts
 1715663296 ./src/app.module.ts
 1715652343 ./src/cronjobs/cronjobs.module.ts

@@ -15,6 +15,16 @@ export class AIService {
     return response
   }
 
+  async smartResponse(prompt: string): Promise<string> {
+    const model = this.genAI.getGenerativeModel({ 
+      model: "gemini-pro" 
+    });
+    const result = await model.generateContent(prompt);
+    const response = await result.response;
+    console.log(response);
+    return response.text();
+  }
+
   async generateResponse(prompt: string): Promise<string> {
     const model = this.genAI.getGenerativeModel({ model: "gemini-pro" });
     const result = await model.generateContent(prompt);

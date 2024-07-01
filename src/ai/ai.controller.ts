@@ -18,4 +18,15 @@ export class AIController {
   async replyChat(@Query("message") message: string): Promise<AI> {
     return this.aiService.replyChat(message);
   }
+
+  @Get("/smart-gemini")
+  @ApiResponse({
+    status: 200,
+    description: "Chat to AI",
+    type: AI,
+  })
+  async smartReply(@Query("message") message: string): Promise<any> {
+    return this.aiService.smartResponse(message);
+  }
+
 }
