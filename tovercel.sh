@@ -18,7 +18,8 @@ if [ $? -eq 0 ]; then
         echo "Deployment to Vercel production successful."
         # Send message using curl
         echo "Sending message to boss..."
-        curl --location 'https://daraboth-personalai.vercel.app/telegram/daraboth/send-message' \
+        curl --location 'https://personalai-1tlzbuc99-guoerr.vercel.app/telegram/daraboth/send-message' \
+        # curl --location 'https://daraboth-personalai.vercel.app/telegram/daraboth/send-message' \
         --header 'Content-Type: application/x-www-form-urlencoded' \
         --data-urlencode 'chatId=485397124' \
         --data-urlencode 'message=From personal-ai. Deploy hz hz boss!'
